@@ -1,6 +1,4 @@
 
-
-// 1. GLOBAL VARIABLES
 let audioCtx;       // The "brain" of the audio (AudioContext)
 let analyser;       // The "ear" that listens to frequencies
 let source;         // The connection between the audio tag and the context
