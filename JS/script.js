@@ -6,6 +6,9 @@ let dataArray;      // The numeric array where frequency data is stored
 let animationId;    // To keep track of the drawing loop
 let gainNode;
 let isPlaying = false;
+let queue = [];     // full ls of tracks
+let currentIndex = -1;  // -1 - none
+let nextId = 1; // auto-increment id for each track
 
 
 // 2. DOM ELEMENTS
@@ -19,25 +22,43 @@ fileInput.addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) return;
 
-     // Update now-playing label
-    const nameEl = document.getElementById('now-playing-name');
-    if (nameEl) nameEl.textContent = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
+    const track = addToQueue(file);   // add to queue first
 
-    // Create a local URL for the uploaded file so the <audio> tag can play it
-    const url = URL.createObjectURL(file);
-    audio.src = url;
+    // If nothing is playing, start this track immediately
+    if (currentIndex === -1) {
+        playTrack(queue.length - 1);  // play last added track
+    }
+});
+
+// QUEUE — play a specific track by its index in the array
+function playTrack(index) {
+    if (index < 0 || index >= queue.length) return;
+
+    const track = queue[index];
+    currentIndex = index;
+
+    // Update audio source
+    audio.src = track.url;
     audio.load();
-    
 
-    // Start the visualizer logic(Audio Engine)
+    // Boot engine if first time
     initVisualizer();
-
-        // Resume context (browser blocks audio until user gesture)
-     if (audioCtx.state === 'suspended') audioCtx.resume();  
+    if (audioCtx.state === 'suspended') audioCtx.resume();
 
     audio.play();
-    isPlaying = true;    
-});
+    isPlaying = true;
+
+    // Update now-playing label
+    const nameEl = document.getElementById('now-playing-name');
+    if (nameEl) nameEl.textContent = track.title;
+
+    // Update play/pause button
+    const btn = document.getElementById('btn-playpause');
+    if (btn) btn.innerHTML = '<i class="fas fa-pause"></i>';
+
+    // Highlight active track in the queue UI
+    renderQueue();
+}
 
 // 4. INITIALIZE THE AUDIO ENGINE
 function initVisualizer() {
@@ -162,6 +183,8 @@ function handleSearch(query) {
   const q = query.toLowerCase().trim();
   console.log('Search query:', q);
 }
+
+//
 // Resize on window resize
  window.addEventListener('resize', () => {
   canvas.width = canvas.offsetWidth;
