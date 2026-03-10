@@ -27,12 +27,12 @@ fileInput.addEventListener('change', function(e) {
     const url = URL.createObjectURL(file);
     audio.src = url;
     audio.load();
-    audio.play();
+    
 
-    // Start the visualizer logic
+    // Start the visualizer logic(Audio Engine)
     initVisualizer();
 
-    // Plays upon User interaction
+        // Resume context (browser blocks audio until user gesture)
      if (audioCtx.state === 'suspended') audioCtx.resume();  
 
     audio.play();
@@ -65,11 +65,8 @@ function initVisualizer() {
      canvas.width = canvas.offsetWidth;
     canvas.height = canvas.offsetHeight;
 
-    // Resize on window resize
-    window.addEventListener('resize', () => {
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
-});
+    
+   
     renderFrame();
 }
 
@@ -162,3 +159,8 @@ function handleSearch(query) {
   const q = query.toLowerCase().trim();
   console.log('Search query:', q);
 }
+// Resize on window resize
+ window.addEventListener('resize', () => {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+});
