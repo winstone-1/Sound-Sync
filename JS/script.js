@@ -4,6 +4,8 @@ let analyser;       // The "ear" that listens to frequencies
 let source;         // The connection between the audio tag and the context
 let dataArray;      // The numeric array where frequency data is stored
 let animationId;    // To keep track of the drawing loop
+let gainNode;
+
 
 // 2. DOM ELEMENTS
 const audio = document.getElementById('audio-player');
@@ -32,11 +34,14 @@ function initVisualizer() {
     if (!audioCtx) {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         analyser = audioCtx.createAnalyser();
+        gainNode = audioCtx.createGain();
 
         // Connect: Audio Tag -> Analyser -> Speakers
         source = audioCtx.createMediaElementSource(audio);
-        source.connect(analyser);
+        source.connect(gainNode);
+        gainNode.connect(analyser) 
         analyser.connect(audioCtx.destination);
+        
     }
 
     // fftSize: How many samples to take. 256 results in 128 frequency bins (bars).
