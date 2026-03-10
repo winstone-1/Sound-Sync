@@ -101,6 +101,9 @@ function renderFrame() {
     // Request the next frame of animation
     animationId = requestAnimationFrame(renderFrame);
 
+     if (!analyser || !dataArray) 
+        return;
+
     // Fill dataArray with the current "volumes" of different frequencies
     analyser.getByteFrequencyData(dataArray);
 
