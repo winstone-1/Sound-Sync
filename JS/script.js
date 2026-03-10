@@ -51,13 +51,17 @@ function initVisualizer() {
         
     }
 
-    // fftSize: How many samples to take. 256 results in 128 frequency bins (bars).
+    
     analyser.fftSize = 2048; 
     analyser.smoothingTimeConstant = 0.8;
     const bufferLength = analyser.frequencyBinCount;
     dataArray = new Uint8Array(bufferLength);
 
-    // Match canvas size to its display size
+    // Size canvas immediately after load
+     canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+
+    // Resize on window resize
     window.addEventListener('resize', () => {
   canvas.width = canvas.offsetWidth;
   canvas.height = canvas.offsetHeight;
