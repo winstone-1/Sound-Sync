@@ -69,6 +69,28 @@ function setVolume(val) {
     gainNode.gain.setTargetAtTime(parseFloat(val), audioCtx.currentTime, 0.01);
 }
 
+function togglePlayPause() {
+    if (!audio.src) return;   // no file loads yet
+
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+
+    if (isPlaying) {
+        audio.pause();
+        isPlaying = false;
+        cancelAnimationFrame(animationId);   // stops draw loop
+    } else {
+        audio.play();
+        isPlaying = true;
+        renderFrame();                        // restart the draw loop
+    }
+
+    const btn = document.getElementById('btn-playpause');
+    if (btn) {
+        btn.innerHTML = isPlaying
+            ? '<i class="fas fa-pause"></i>'
+            : '<i class="fas fa-play"></i>';
+    }
+}
 // 5. THE DRAWING LOOP (runs 60 times per second)
 function renderFrame() {
     // Request the next frame of animation
