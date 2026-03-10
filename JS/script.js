@@ -19,6 +19,10 @@ fileInput.addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) return;
 
+     // Update now-playing label
+    const nameEl = document.getElementById('now-playing-name');
+    if (nameEl) nameEl.textContent = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
+
     // Create a local URL for the uploaded file so the <audio> tag can play it
     const url = URL.createObjectURL(file);
     audio.src = url;
@@ -124,7 +128,9 @@ function renderFrame() {
 
 
         // We subtract barHeight from canvas.height to draw from the bottom up
-        ctx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
+        ctx.fillRect(x, canvas.height - barHeight,
+             barWidth - 1,
+             barHeight);
 
         x += barWidth;
     }
@@ -150,3 +156,9 @@ menuButtons.forEach((btn, index) => {
         mobileMenus[index].classList.toggle('hidden');
     });
 });
+
+// SEARCH BAR
+function handleSearch(query) {
+  const q = query.toLowerCase().trim();
+  console.log('Search query:', q);
+}
