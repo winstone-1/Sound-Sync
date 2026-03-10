@@ -17,6 +17,18 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const fileInput = document.getElementById('audio');
 
+// Auto-advance when track ends
+audio.addEventListener('ended', () => {
+    isPlaying = false;
+    if (currentIndex < queue.length - 1) {
+        playNext();
+    } else {
+        // End of queue — reset button
+        const btn = document.getElementById('btn-playpause');
+        if (btn) btn.innerHTML = '<i class="fas fa-play"></i>';
+    }
+});
+
 // 3. FILE UPLOAD LISTENER
 fileInput.addEventListener('change', function(e) {
     const file = e.target.files[0];
@@ -58,6 +70,20 @@ function playTrack(index) {
 
     // Highlight active track in the queue UI
     renderQueue();
+}
+
+// QUEUE — skip to next track
+function playNext() {
+    if (currentIndex < queue.length - 1) {
+        playTrack(currentIndex + 1);
+    }
+}
+
+// QUEUE — go back to previous track
+function playPrev() {
+    if (currentIndex > 0) {
+        playTrack(currentIndex - 1);
+    }
 }
 
 // 4. INITIALIZE THE AUDIO ENGINE
