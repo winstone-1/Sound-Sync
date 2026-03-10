@@ -130,6 +130,7 @@ function renderFrame() {
 function toggleSidebar() {
   const sidebar = document.querySelector('aside');
   const main    = document.querySelector('.ml-64');
+  const overlay = document.getElementById('sidebar-overlay');
 
   sidebar.classList.toggle('-translate-x-full');
   main.classList.toggle('ml-0');
