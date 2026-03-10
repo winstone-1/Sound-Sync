@@ -5,6 +5,7 @@ let source;         // The connection between the audio tag and the context
 let dataArray;      // The numeric array where frequency data is stored
 let animationId;    // To keep track of the drawing loop
 let gainNode;
+let isPlaying = false;
 
 
 // 2. DOM ELEMENTS
@@ -26,6 +27,12 @@ fileInput.addEventListener('change', function(e) {
 
     // Start the visualizer logic
     initVisualizer();
+
+    // Plays upon User interaction
+     if (audioCtx.state === 'suspended') audioCtx.resume();  
+
+    audio.play();
+    isPlaying = true;    
 });
 
 // 4. INITIALIZE THE AUDIO ENGINE
