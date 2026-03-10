@@ -61,14 +61,36 @@
 </aside>
     </div>
 
+
+
+
+
+
    <div class="flex-1 flex flex-col min-h-screen ml-64"> 
     <main class="flex-1 min-h-screen flex flex-col items-center justify-center p-8 bg-black relative">
         <input type="file" accept="audio/*" id="audio" class="mb-4 text-white">
         
         <audio id="audio-player" class="mb-8"></audio>
 
-        <div class="w-full max-w-4xl bg-slate-900/50 rounded-3xl border border-white/5 p-4 shadow-2xl">
-            <canvas id="canvas"></canvas>
+        <div class="w-full max-w-4xl">
+
+  
+  <div class="flex items-center justify-between mb-3">
+    <label for="audio"
+      class="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl cursor-pointer border border-slate-700 transition-colors">
+      <i class="fas fa-folder-open"></i>
+      Open File
+    </label>
+    <p id="now-playing-name" class="text-slate-500 text-xs font-mono truncate max-w-xs">
+      No track loaded
+    </p>
+  </div>
+
+  
+  <div class="bg-slate-900/60 rounded-3xl border border-white/5 p-4 shadow-2xl">
+    <canvas id="canvas"></canvas>
+
+
 
            <div class="flex items-center gap-4 mt-4 px-2">
   <button id="btn-playpause" onclick="togglePlayPause()"
@@ -116,7 +138,7 @@
         <ul class="space-y-4 text-sm text-slate-400">
           <li><a href="#" class="hover:text-purple-400 transition-colors">Browse Music</a></li>
           <li><a href="#" class="hover:text-purple-400 transition-colors">Live Rooms</a></li>
-          <li><a href="" class="hover:text-purple-400 transition-colors">Artist Dashboard</a></li>
+          <li><a href="#" class="hover:text-purple-400 transition-colors">Artist Dashboard</a></li>
         </ul>
       </div>
 
@@ -124,7 +146,7 @@
         <h4 class="text-white font-semibold mb-6 uppercase tracking-widest text-xs">Support</h4>
         <ul class="space-y-4 text-sm text-slate-400">
           <li><a href="#" class="hover:text-purple-400 transition-colors">Help Center</a></li>
-          <li><a href="#" class="hover:text-purple-400 transition-colors">API Docs</a></li>
+          <li><a href="#" class="hover:text-purple-400 transition-colors"></a></li>
           <li><a href="#" class="hover:text-purple-400 transition-colors">Community</a></li>
         </ul>
       </div>
