@@ -29,6 +29,7 @@
 </div>
 
     <div class="flex flex-1">
+
 <aside class="flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-gray-900 border-r border-gray-700 fixed top-0 left-0 z-10 transition-transform duration-300">
     <a href="index.html">
         <img class="w-auto h-6 sm:h-7" src="Assets\logo.png" alt="Logo">
@@ -79,7 +80,21 @@
 
 
    <div class="flex-1 flex flex-col min-h-screen ml-64"> 
-    <main class="flex-1 min-h-screen flex flex-col items-center justify-center p-8 bg-black relative">
+    <main class="flex-1 min-h-screen flex flex-col items-center justify-start pt-8 px-8 bg-black relative">
+      <div class="w-full max-w-4xl mb-6">
+    <div class="relative">
+      <span class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+        <i class="fas fa-search text-slate-500 text-sm"></i>
+      </span>
+      <input
+        id="main-search"
+        type="text"
+        placeholder="Search tracks, artists..."
+        oninput="handleSearch(this.value)"
+        class="w-full bg-slate-900 border border-slate-700 text-slate-300 text-sm placeholder-slate-500 rounded-2xl pl-11 pr-4 py-3 focus:outline-none focus:border-purple-600 transition-colors">
+    </div>
+  </div>
+
         <input type="file" accept="audio/*" id="audio" class="mb-4 text-white hidden">
         
         <audio id="audio-player" class="mb-8"></audio>
