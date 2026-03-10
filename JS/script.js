@@ -58,6 +58,10 @@ function initVisualizer() {
     renderFrame();
 }
 
+function setVolume(val) {
+    gainNode.gain.setTargetAtTime(parseFloat(val), audioCtx.currentTime, 0.01);
+}
+
 // 5. THE DRAWING LOOP (runs 60 times per second)
 function renderFrame() {
     // Request the next frame of animation
