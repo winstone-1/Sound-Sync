@@ -28,8 +28,6 @@
   class="fixed inset-0 bg-black/50 z-10  hidden">
 </div>
 
-    <div class="flex flex-1">
-
 <aside class="flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-gray-900 border-r border-gray-700 fixed top-0 left-0 z-10 transition-transform duration-300">
     <a href="index.html">
         <img class="w-auto h-6 sm:h-7 ml-32" src="Assets\logo.png" alt="Logo">
@@ -90,16 +88,12 @@
 </div>
     </div>
 </aside>
-    </div>
-
-
-
 
 
 
    <div class="flex-1 flex flex-col min-h-screen ml-64"> 
-    <main class="flex-1 min-h-screen flex flex-col items-center justify-start pt-8 px-8 bg-black relative">
-      <div class="w-full max-w-4xl mb-6">
+    <main class="flex-1 flex flex-col justify-start pt-8 px-8 bg-black relative">
+      <div class="w-full mb-6">
     <div class="relative">
       <span class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
         <i class="fas fa-search text-slate-500 text-sm"></i>
@@ -117,75 +111,76 @@
         
         <audio id="audio-player" class="mb-8"></audio>
 
-        <div class="w-full max-w-4xl">
+        <!-- TWO COLUMN ROW -->
+        <div class="w-full flex gap-6 items-start">
 
-  
-  <div class="flex items-center justify-between mb-3">
-    <label for="audio"
-      class="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl cursor-pointer border border-slate-700 transition-colors">
-      <i class="fas fa-folder-open"></i>
-      Open File
-    </label>
-    <p id="now-playing-name" class="text-slate-500 text-xs font-mono truncate max-w-xs">
-      No track loaded
-    </p>
-  </div>
+          <!-- LEFT — visualizer -->
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between mb-3">
+              <label for="audio"
+                class="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl cursor-pointer border border-slate-700 transition-colors">
+                <i class="fas fa-folder-open"></i>
+                Open File
+              </label>
+              <p id="now-playing-name" class="text-slate-500 text-xs font-mono truncate max-w-xs">
+                No track loaded
+              </p>
+            </div>
+            <div class="bg-slate-900/60 rounded-3xl border border-white/5 p-4 shadow-2xl">
+              <canvas id="canvas"></canvas>
+              <div class="flex items-center gap-4 mt-4 px-2">
+                <button id="btn-playpause" onclick="togglePlayPause()"
+                  class="w-11 h-11 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white shadow-lg hover:scale-105 transition-transform active:scale-95">
+                  <i class="fas fa-play text-sm"></i>
+                </button>
+                <div class="flex items-center gap-2 flex-1">
+                  <i class="fas fa-volume-low text-slate-500 text-xs"></i>
+                  <input type="range" min="0" max="1" step="0.01" value="0.8"
+                    oninput="setVolume(this.value)"
+                    class="flex-1 h-1 accent-purple-500 cursor-pointer">
+                  <i class="fas fa-volume-high text-slate-500 text-xs"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /LEFT -->
 
-  
-  <div class="bg-slate-900/60 rounded-3xl border border-white/5 p-4 shadow-2xl">
-    <canvas id="canvas"></canvas>
+          <!-- RIGHT — queue -->
+          <div class="w-80 flex-shrink-0 sticky top-8">
+            <div class="bg-slate-900/60 rounded-3xl border border-white/5 shadow-2xl overflow-hidden">
+              <div class="flex items-center justify-between px-5 py-4 border-b border-slate-800">
+                <div class="flex items-center gap-2">
+                  <i class="fas fa-list-ul text-purple-400 text-sm"></i>
+                  <h2 class="text-white font-bold text-sm">Up Next</h2>
+                  <span id="queue-count"
+                    class="bg-slate-800 text-slate-400 text-xs font-mono px-2 py-0.5 rounded-full">
+                    0 tracks
+                  </span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button onclick="playPrev()"
+                    class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+                    <i class="fas fa-backward-step text-xs"></i>
+                  </button>
+                  <button onclick="playNext()"
+                    class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+                    <i class="fas fa-forward-step text-xs"></i>
+                  </button>
+                </div>
+              </div>
+              <div id="queue-list" class="divide-y divide-slate-800/50 overflow-y-auto" style="max-height: calc(100vh - 300px);">
+                <div class="text-center py-8">
+                  <p class="text-slate-600 text-sm font-mono">Queue is empty</p>
+                  <p class="text-slate-700 text-xs mt-1">Open a file to add tracks</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- /RIGHT -->
 
-
-
-           <div class="flex items-center gap-4 mt-4 px-2">
-  <button id="btn-playpause" onclick="togglePlayPause()"
-    class="w-11 h-11 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white shadow-lg hover:scale-105 transition-transform active:scale-95">
-    <i class="fas fa-play text-sm"></i>
-  </button>
-
-  <div class="flex items-center gap-2 flex-1">
-      <i class="fas fa-volume-low text-slate-500 text-xs"></i>
-      <input type="range" min="0" max="1" step="0.01" value="0.8"
-             oninput="setVolume(this.value)"
-             class="flex-1 h-1 accent-purple-500 cursor-pointer">
-      <i class="fas fa-volume-high text-slate-500 text-xs"></i>
-    </div>
-  </div>       
-  </div>       
-  </div> 
-   <div class="w-full max-w-4xl mt-6 mb-8">
-    <div class="bg-slate-900/60 rounded-3xl border border-white/5 shadow-2xl overflow-hidden">
-
-      <div class="flex items-center justify-between px-5 py-4 border-b border-slate-800">
-        <div class="flex items-center gap-2">
-          <i class="fas fa-list-ul text-purple-400 text-sm"></i>
-          <h2 class="text-white font-bold text-sm">Up Next</h2>
-          <span id="queue-count"
-            class="bg-slate-800 text-slate-400 text-xs font-mono px-2 py-0.5 rounded-full">
-            0 tracks
-          </span>
         </div>
-        <div class="flex items-center gap-2">
-          <button onclick="playPrev()"
-            class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
-            <i class="fas fa-backward-step text-xs"></i>
-          </button>
-          <button onclick="playNext()"
-            class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
-            <i class="fas fa-forward-step text-xs"></i>
-          </button>
-        </div>
-      </div>
+        <!-- /TWO COLUMN ROW -->
 
-      <div id="queue-list" class="divide-y divide-slate-800/50 max-h-72 overflow-y-auto">
-        <div class="text-center py-8">
-          <p class="text-slate-600 text-sm font-mono">Queue is empty</p>
-          <p class="text-slate-700 text-xs mt-1">Open a file to add tracks</p>
-        </div>
-      </div>
-
-    </div>
-  </div>      
   </main>
         
 
