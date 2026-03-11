@@ -86,7 +86,7 @@ function playPrev() {
     }
 }
 
-// QUEUE — add a track to the array
+// QUEUE — add a track to the array from File
 function addToQueue(file) {
     const track = {
         id: nextId++,
@@ -100,6 +100,63 @@ function addToQueue(file) {
     queue.push(track);
     renderQueue();   // update the UI list
     return track;
+}
+
+// QUEUE — add a Deezer track (from search results)
+function addDeezerTrack(id, title, artist, previewUrl, cover) {
+    const track = {
+        id:     nextId++,
+        title,
+        artist,
+        votes:  0,
+        url:    previewUrl,
+        cover,
+        file:   null
+    };
+    queue.push(track);
+    saveQueueToStorage();
+    renderQueue();
+
+    // Flash feedback in now-playing label
+    const nameEl = document.getElementById('now-playing-name');
+    if (nameEl) {
+        const prev = nameEl.textContent;
+        nameEl.textContent = `Added: ${title}`;
+        setTimeout(() => {
+            nameEl.textContent = currentIndex >= 0 ? (queue[currentIndex]?.title || prev) : prev;
+        }, 1500);
+    }
+}
+
+// STORAGE — save queue to localStorage (Deezer tracks  survive refresh only)
+function saveQueueToStorage() {
+    const saveable = queue.map(t => ({
+        id:     t.id,
+        title:  t.title,
+        artist: t.artist,
+        votes:  t.votes,
+        url:    t.url,
+        cover:  t.cover || null,
+        file:   null
+    }));
+    localStorage.setItem('soundsync_queue', JSON.stringify(saveable));
+}
+
+// STORAGE — restore queue on page load
+function loadQueueFromStorage() {
+    try {
+        const raw = localStorage.getItem('soundsync_queue');
+        if (!raw) return;
+        const saved = JSON.parse(raw);
+        // Blob URLs die on refresh — only restore Deezer stream URLs
+        const restorable = saved.filter(t => t.url && !t.url.startsWith('blob:'));
+        if (!restorable.length) return;
+        queue  = restorable;
+        nextId = Math.max(...queue.map(t => t.id)) + 1;
+        renderQueue();
+    } catch (e) {
+        console.error('Queue restore failed:', e);
+    }
 }
 
 // QUEUE — draw the queue list into #queue-list
@@ -249,30 +306,7 @@ function renderFrame() {
     }
 }
 
-
-function toggleSidebar() {
-  const sidebar = document.querySelector('aside');
-  const main    = document.querySelector('.ml-64');
-  const overlay = document.getElementById('sidebar-overlay');
-
-  sidebar.classList.toggle('-translate-x-full');
-  main.classList.toggle('ml-0');
-  main.classList.toggle('ml-64');
-   overlay.classList.toggle('hidden');
-}
-// 6. SIDEBAR MENU TOGGLE LOGIC
-const menuButtons = document.querySelectorAll('.menu-btn');
-const mobileMenus = document.querySelectorAll('.mobile-menu');
-
-menuButtons.forEach((btn, index) => {
-    btn.addEventListener('click', () => {
-        mobileMenus[index].classList.toggle('hidden');
-    });
-});
-
-
-
-//
+loadQueueFromStorage();
 // Resize on window resize
  window.addEventListener('resize', () => {
   canvas.width = canvas.offsetWidth;
