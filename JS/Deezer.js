@@ -1,6 +1,9 @@
 // SEARCH BAR
 let searchTimeout = null;
 
+
+const deezerAudio = document.getElementById('deezer-player');
+
 function handleSearch(query) {
     clearTimeout(searchTimeout);
     const q = query.trim();
@@ -89,11 +92,12 @@ function renderSearchResults(tracks, query) {
 
 // Preview 30s clip — plays through visualizer but doesn't add to queue
 function previewDeezerTrack(previewUrl, title) {
-    audio.src = previewUrl;
-    audio.load();
-    initVisualizer();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-    audio.play();
+    // Stop main player
+    audio.pause();
+
+    deezerAudio.src = previewUrl;
+    deezerAudio.load();
+    deezerAudio.play().catch(e => console.error('Deezer play failed:', e));
     isPlaying = true;
 
     const btn = document.getElementById('btn-playpause');

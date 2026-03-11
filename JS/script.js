@@ -53,9 +53,17 @@ function playTrack(index) {
     audio.src = track.url;
     audio.load();
 
-    // Boot engine if first time
-    initVisualizer();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
+    // Boot engine if track is a stream or raw file
+    if (track.url.startsWith('blob:')) {
+        initVisualizer();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+    } else {
+        audio.crossOrigin = 'anonymous';
+        // Still boot audioCtx if not already running so togglePlayPause works
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
 
     audio.play();
     isPlaying = true;
@@ -244,19 +252,22 @@ function setVolume(val) {
     gainNode.gain.setTargetAtTime(parseFloat(val), audioCtx.currentTime, 0.01);
 }
 
+
+
 function togglePlayPause() {
     if (!audio.src) return;   // no file loads yet
 
     if (audioCtx.state === 'suspended') audioCtx.resume();
 
-    if (isPlaying) {
+   if (isPlaying) {
         audio.pause();
         isPlaying = false;
-        cancelAnimationFrame(animationId);   // stops draw loop
+        if (animationId) cancelAnimationFrame(animationId);
     } else {
         audio.play();
         isPlaying = true;
-        renderFrame();                        // restart the draw loop
+        // Only restart draw loop if visualizer is active (local files)
+        if (analyser) renderFrame();
     }
 
     const btn = document.getElementById('btn-playpause');
