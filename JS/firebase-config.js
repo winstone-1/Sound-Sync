@@ -1,9 +1,12 @@
+
  import { initializeApp }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, signInWithPopup, GoogleAuthProvider,
            createUserWithEmailAndPassword, signInWithEmailAndPassword,
            onAuthStateChanged }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    
 
   //  config 
   const firebaseConfig = {
@@ -18,6 +21,19 @@
   const app      = initializeApp(firebaseConfig);
   const auth     = getAuth(app);
   const provider = new GoogleAuthProvider();
+
+  // Modules don't see functions
+function showError(msg) {
+  const el = document.getElementById('auth-error');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.remove('hidden');
+}
+
+function hideError() {
+  const el = document.getElementById('auth-error');
+  if (el) el.classList.add('hidden');
+}
 
   //  If already logged in → skip to app 
   onAuthStateChanged(auth, (user) => {
