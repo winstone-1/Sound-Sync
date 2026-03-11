@@ -270,11 +270,7 @@ menuButtons.forEach((btn, index) => {
     });
 });
 
-// SEARCH BAR
-function handleSearch(query) {
-  const q = query.toLowerCase().trim();
-  console.log('Search query:', q);
-}
+
 
 //
 // Resize on window resize
