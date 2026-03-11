@@ -4,54 +4,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Join Us</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Join.css">
+
 </head>
 <body>
     <div class="flex items-center justify-center min-h-screen bg-slate-950 px-4">
   <div class="w-full max-w-md">
     <div class="bg-slate-900/80 backdrop-blur-xl border border-slate-800 shadow-2xl rounded-3xl p-10">
       
-      <div class="text-center mb-10">
-        <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-tr from-purple-600 to-blue-500 mb-4 shadow-lg shadow-purple-500/20">
-             <a href="pulse.html">
-        <img class="w-auto h-6 sm:h-7" src="Assets\logo.png" alt="Logo">
+      <div class="text-center mb-8">
+  <!-- Logo -->
+  <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-blue-500 mb-5 shadow-lg shadow-purple-500/25">
+    <a href="index.html">
+      <img class="w-auto h-6" src="Assets/logo.png" alt="Logo"
+           onerror="this.style.display='none'; this.parentElement.innerHTML='<i class=\'fas fa-music text-white text-xl\'></i>'">
     </a>
-        </div>
-        <h2 class="text-3xl font-extrabold text-white tracking-tight">Welcome Back</h2>
-        <p class="text-slate-400 text-sm mt-2">Ready to sync your sound?</p>
-      </div>
+  </div>
 
-      <form>
-        <div class="mb-6">
-          <label class="block text-slate-300 text-xs font-semibold uppercase tracking-wider mb-2" for="username">
-            Username
-          </label>
-          <input class="w-full bg-slate-800 border-none rounded-xl py-3 px-4 text-white placeholder-slate-500 focus:ring-2 focus:ring-purple-500 transition-all outline-none" id="username" type="text" placeholder="Enter your username">
-        </div>
+  
+  <h2 id="header-title" class="text-3xl font-extrabold text-white tracking-tight">
+    Welcome Back
+  </h2>
+  <p id="header-subtitle" class="text-slate-400 text-sm mt-2">
+    Ready to sync your sound?
+  </p>
+</div>
 
-        <div class="mb-8">
-          <div class="flex justify-between items-center mb-2">
-            <label class="block text-slate-300 text-xs font-semibold uppercase tracking-wider" for="password">
-              Password
-            </label>
-            <a class="text-xs font-medium text-purple-400 hover:text-purple-300 transition-colors" href="#">
-              Forgot?
-            </a>
-          </div>
-          <input class="w-full bg-slate-800 border-none rounded-xl py-3 px-4 text-white placeholder-slate-500 focus:ring-2 focus:ring-purple-500 transition-all outline-none" id="password" type="password" placeholder="••••••••">
-        </div>
+      <!-- Tab switcher -->
+<div class="flex bg-slate-800/80 rounded-2xl p-1 mb-7 border border-slate-700">
+  <button id="tab-signin" onclick="switchTab('signin')"
+    class="tab-active flex-1 py-2.5 text-sm font-bold rounded-xl transition-all duration-200">
+    Sign In
+  </button>
+  <button id="tab-signup" onclick="switchTab('signup')"
+    class="flex-1 py-2.5 text-sm font-bold rounded-xl text-slate-400 transition-all duration-200">
+    Sign Up
+  </button>
+</div>
 
-        <button class="w-full py-4 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-xl shadow-purple-900/20 active:scale-95 transition-transform" type="button">
-          Sign In
-        </button>
-      </form>
+<!-- Error message area -->
+<div id="auth-error"
+  class="hidden mb-4 px-4 py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-xs text-center">
+</div>
 
-      <p class="text-center mt-8 text-slate-400 text-sm">
-        New to the rhythm? <a href="#" class="text-white font-bold hover:underline">Join Now</a>
-      </p>
+<!-- Display name — signup only -->
+<div id="field-name" class="field-slide max-h-0 opacity-0 mb-0">
+  <div class="mb-4">
+    <label class="block text-slate-300 text-xs font-semibold uppercase tracking-wider mb-2">
+      Display Name
+    </label>
+    <div class="relative">
+      <i class="fas fa-user absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+      <input id="username" type="text" placeholder="Your name"
+        class="w-full bg-slate-800 rounded-xl py-3 pl-10 pr-4 text-white placeholder-slate-500 outline-none border border-slate-700 focus:border-purple-500 transition-colors">
     </div>
+  </div>
+</div>
+
+<!-- Email -->
+<div class="mb-4">
+  <label class="block text-slate-300 text-xs font-semibold uppercase tracking-wider mb-2">
+    Email
+  </label>
+  <div class="relative">
+    <i class="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+    <input id="email" type="email" placeholder="winstone@gmail.com"
+      class="w-full bg-slate-800 rounded-xl py-3 pl-10 pr-4 text-white placeholder-slate-500 outline-none border border-slate-700 focus:border-purple-500 transition-colors">
+  </div>
+</div>
+
+<!-- Password -->
+<div class="mb-6">
+  <div class="flex justify-between items-center mb-2">
+    <label class="block text-slate-300 text-xs font-semibold uppercase tracking-wider">
+      Password
+    </label>
+    <a id="forgot-link" class="text-xs font-medium text-purple-400 hover:text-purple-300 transition-colors" href="#">
+      Forgot Password?
+    </a>
+  </div>
+  <div class="relative">
+    <i class="fas fa-lock absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+    <input id="password" type="password" placeholder="••••••••"
+      class="w-full bg-slate-800 rounded-xl py-3 pl-10 pr-12 text-white placeholder-slate-500 outline-none border border-slate-700 focus:border-purple-500 transition-colors">
+
+
+
+    <!-- Show/hide password toggle -->
+    <button type="button" onclick="togglePassword()"
+      class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-300 transition-colors">
+      <i id="pwd-eye" class="fas fa-eye text-xs"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Main action button -->
+<button id="btn-auth" type="button"
+  class="w-full py-3.5 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-bold rounded-xl shadow-lg shadow-purple-900/30 active:scale-95 transition-all mb-5">
+  Sign In
+</button>
+
+<!-- Divider -->
+<div class="flex items-center gap-3 mb-5">
+  <div class="flex-1 h-px bg-slate-700/70"></div>
+  <span class="text-slate-500 text-xs mono uppercase tracking-widest">or</span>
+  <div class="flex-1 h-px bg-slate-700/70"></div>
+</div>
+
+<!-- Google button -->
+<button type="button" onclick="signInWithGoogle()"
+  class="google-btn w-full py-3 bg-slate-800/80 border border-slate-700 text-white font-semibold rounded-xl flex items-center justify-center gap-3 transition-all active:scale-95 mb-2">
+  <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
+    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/>
+    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+  </svg>
+  Continue with Google
+</button>
 
     <p class="text-center text-slate-600 text-xs mt-8">
       &copy;2026 SoundSync. Mastering your experience.

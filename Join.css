@@ -1,0 +1,34 @@
+ * { font-family: 'Syne', sans-serif; }
+  .mono { font-family: 'Space Mono', monospace; }
+
+  /* Input focus glow */
+  input:focus {
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.5);
+  }
+
+  /* Animated background */
+  body {
+    background: #020617;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(124,58,237,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(37,99,235,0.06) 0%, transparent 60%);
+  }
+
+  /* Tab active indicator */
+  .tab-active {
+    background: linear-gradient(135deg, #7c3aed, #2563eb);
+    color: white;
+    box-shadow: 0 0 16px rgba(124,58,237,0.3);
+  }
+
+  /* Google button hover */
+  .google-btn:hover {
+    background: #1e293b;
+    border-color: #7c3aed;
+  }
+
+  /* Smooth field transitions */
+  .field-slide {
+    transition: all 0.25s ease;
+    overflow: hidden;
+  }
