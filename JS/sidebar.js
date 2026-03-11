@@ -1,12 +1,11 @@
+// ── SIDEBAR 
 function toggleSidebar() {
-  const sidebar = document.querySelector('aside');
-  const main    = document.querySelector('.ml-64');
-  const overlay = document.getElementById('sidebar-overlay');
-
-  sidebar.classList.toggle('-translate-x-full');
-  main.classList.toggle('ml-0');
-  main.classList.toggle('ml-64');
-   overlay.classList.toggle('hidden');
+    const sidebar = document.querySelector('aside');
+    const shell   = document.querySelector('.ml-64');
+    const overlay = document.getElementById('sidebar-overlay');
+    sidebar.classList.toggle('-translate-x-full');
+    if (shell) { shell.classList.toggle('ml-0'); shell.classList.toggle('ml-64'); }
+    overlay.classList.toggle('hidden');
 }
 // 6. SIDEBAR MENU TOGGLE LOGIC
 const menuButtons = document.querySelectorAll('.menu-btn');

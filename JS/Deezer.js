@@ -1,8 +1,8 @@
-// SEARCH BAR
+//  DEEZER SEARCH 
+// Depends on: audio, deezerAudio, initVisualizer, audioCtx,
+//             isPlaying, renderQueue, addDeezerTrack 
+
 let searchTimeout = null;
-
-
-const deezerAudio = document.getElementById('deezer-player');
 
 function handleSearch(query) {
     clearTimeout(searchTimeout);
@@ -45,7 +45,7 @@ async function searchDeezer(query) {
             <i class="fas fa-wifi text-red-400 text-xl mb-3"></i>
             <p class="text-red-400 text-sm">Search failed. Check your connection.</p>
           </div>`;
-        console.error('Deezer error:', err);
+        console.error('Deezer search error:', err);
     }
 }
 
@@ -73,13 +73,11 @@ function renderSearchResults(tracks, query) {
         </div>
 
         <div class="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-          <!-- Preview 30s -->
           <button onclick="previewDeezerTrack('${track.preview}', '${escapeStr(track.title)}')"
             class="w-7 h-7 rounded-lg bg-slate-700 hover:bg-slate-600 flex items-center justify-center
                    text-slate-400 hover:text-white transition-colors" title="Preview 30s">
             <i class="fas fa-play text-xs"></i>
           </button>
-          <!-- Add to queue -->
           <button onclick="addDeezerTrack(${track.id}, '${escapeStr(track.title)}', '${escapeStr(track.artist.name)}', '${track.preview}', '${track.album.cover_medium}')"
             class="w-7 h-7 rounded-lg bg-purple-600 hover:bg-purple-500 flex items-center justify-center
                    text-white transition-colors" title="Add to queue">
@@ -90,14 +88,18 @@ function renderSearchResults(tracks, query) {
       </div>`).join('')}`;
 }
 
-// Preview 30s clip — plays through visualizer but doesn't add to queue
+// Preview 30s — plays through visualizer, does NOT add to queue
 function previewDeezerTrack(previewUrl, title) {
-    // Stop main player
     audio.pause();
+    audio.src = '';
+
+    // Init full audio graph so visualizer works
+    initVisualizer();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
 
     deezerAudio.src = previewUrl;
     deezerAudio.load();
-    deezerAudio.play().catch(e => console.error('Deezer play failed:', e));
+    deezerAudio.play().catch(e => console.error('Preview failed:', e));
     isPlaying = true;
 
     const btn = document.getElementById('btn-playpause');
