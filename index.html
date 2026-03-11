@@ -66,10 +66,28 @@
           
         </nav>
 
-        <a href="#" class="flex items-center px-4 -mx-2">
-            <img class="object-cover mx-2 rounded-full h-9 w-9" src="Assets\profile picture.jpg" alt="avatar" />
-            <span class="mx-2 font-medium text-gray-800 dark:text-gray-200">Winstone Mwangi</span>
-        </a>
+        <div class="flex items-center justify-between px-2 mt-2">
+  <div class="flex items-center gap-2">
+    <img id="profile-avatar"
+         class="object-cover rounded-full h-9 w-9 border-2 border-purple-600/40"
+         src="https://ui-avatars.com/api/?name=U&background=7c3aed&color=fff&size=36"
+         alt="avatar">
+    <div class="min-w-0">
+      <p id="profile-name"
+         class="text-sm font-semibold text-slate-200 truncate max-w-28">
+        Loading...
+      </p>
+      <p class="text-xs text-slate-500">Member</p>
+    </div>
+  </div>
+
+  <!-- Sign out button -->
+  <button onclick="signOut()"
+    title="Sign out"
+    class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-600 hover:text-red-400 hover:bg-red-400/10 transition-colors">
+    <i class="fas fa-right-from-bracket text-xs"></i>
+  </button>
+</div>
     </div>
 </aside>
     </div>
@@ -237,5 +255,6 @@
 </footer>
    </div>
     <script src="JS/script.js"></script>
+    <script src="JS/profile.js"></script>
 </body>
 </html>

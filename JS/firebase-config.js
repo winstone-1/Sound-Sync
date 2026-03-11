@@ -35,13 +35,16 @@ function hideError() {
   if (el) el.classList.add('hidden');
 }
 
-  //  If already logged in → skip to app 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      saveProfile(user);
-      window.location.href = 'index.html';
-    }
-  });
+  
+  // signOut() removes 'soundsync_user' before redirecting here
+ onAuthStateChanged(auth, (user) => {
+  const justSignedOut = !localStorage.getItem('soundsync_user');
+
+  if (user && !justSignedOut) {
+    saveProfile(user);
+    window.location.href = 'index.html';
+  }
+});
 
   //  Save profile to localStorage 
   function saveProfile(user, overrideName) {
