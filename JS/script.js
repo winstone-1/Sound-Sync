@@ -86,6 +86,72 @@ function playPrev() {
     }
 }
 
+// QUEUE — add a track to the array
+function addToQueue(file) {
+    const track = {
+        id: nextId++,
+        title: file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' '),
+        artist: 'Local File',
+        votes: 0,
+        url: URL.createObjectURL(file),
+        file: file
+    };
+
+    queue.push(track);
+    renderQueue();   // update the UI list
+    return track;
+}
+
+// QUEUE — draw the queue list into #queue-list
+function renderQueue() {
+    const container = document.getElementById('queue-list');
+    if (!container) return;
+
+    // Update count badge
+    const countEl = document.getElementById('queue-count');
+    if (countEl) countEl.textContent = `${queue.length} track${queue.length !== 1 ? 's' : ''}`;
+
+    if (queue.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-8">
+            <p class="text-slate-600 text-sm font-mono">Queue is empty</p>
+            <p class="text-slate-700 text-xs mt-1">Open a file to add tracks</p>
+          </div>`;
+        return;
+    }
+
+    container.innerHTML = queue.map((track, index) => {
+        const isActive = index === currentIndex;
+        return `
+        <div class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors cursor-pointer
+             ${isActive ? 'bg-purple-600/20 border border-purple-500/30' : 'hover:bg-slate-800/60'}"
+             onclick="playTrack(${index})">
+
+          <div class="w-6 text-center flex-shrink-0">
+            ${isActive
+              ? '<i class="fas fa-volume-up text-purple-400 text-xs animate-pulse"></i>'
+              : `<span class="text-slate-600 text-xs font-mono">${index + 1}</span>`
+            }
+          </div>
+
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold truncate ${isActive ? 'text-white' : 'text-slate-300'}">
+              ${track.title}
+            </p>
+            <p class="text-xs text-slate-500 truncate">${track.artist}</p>
+          </div>
+
+          <button onclick="event.stopPropagation(); voteForTrack(${track.id})"
+            class="flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold
+                   ${isActive ? 'bg-purple-500/20 text-purple-300' : 'bg-slate-800 text-slate-400'}
+                   hover:bg-purple-500/30 hover:text-purple-300 transition-colors">
+            <i class="fas fa-thumbs-up text-xs"></i>
+            <span>${track.votes}</span>
+          </button>
+        </div>`;
+    }).join('');
+}
+
 // 4. INITIALIZE THE AUDIO ENGINE
 function initVisualizer() {
     // We only create the AudioContext once 
