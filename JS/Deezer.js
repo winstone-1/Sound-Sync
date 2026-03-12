@@ -12,49 +12,18 @@ function handleSearch(query) {
 }
 
 async function searchDeezer(query) {
-    const container = document.getElementById('queue-list');
-    if (!container) return;
-
-    container.innerHTML = `
-      <div class="text-center py-8">
-        <i class="fas fa-spinner fa-spin text-purple-400 text-xl mb-3"></i>
-        <p class="text-slate-500 text-sm">Searching Deezer...</p>
-      </div>`;
-
+    // ... setup code (spinner, etc.) ...
     try {
-        // SWAP PROXY: Using AllOrigins is often more reliable for Localhost development
-        const targetUrl = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=15`;
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+        // Use your NEW local rewrite path
+        const url = `/api/deezer/search?q=${encodeURIComponent(query)}&limit=15`;
         
-        const res = await fetch(proxyUrl);
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`Server error: ${res.status}`);
         
-        if (!res.ok) throw new Error(`Proxy error: ${res.status}`);
-
-        const wrapper = await res.json();
-        // AllOrigins wraps the response in a 'contents' string that we must parse
-        const data = JSON.parse(wrapper.contents);
-
-        if (!data.data || data.data.length === 0) {
-            container.innerHTML = `
-              <div class="text-center py-8">
-                <p class="text-slate-500 text-sm">No results for "${query}"</p>
-                <button onclick="renderQueue()" class="text-purple-400 text-xs mt-2 hover:text-purple-300">
-                  ← Back to queue
-                </button>
-              </div>`;
-            return;
-        }
-
-        renderSearchResults(data.data, query);
-
+        const data = await res.json();
+        // 
     } catch (err) {
-        container.innerHTML = `
-          <div class="text-center py-8">
-            <i class="fas fa-wifi text-red-400 text-xl mb-3"></i>
-            <p class="text-red-400 text-sm">Search failed (403). Try again in a moment.</p>
-            <button onclick="searchDeezer('${query}')" class="text-xs text-slate-400 underline mt-2">Retry</button>
-          </div>`;
-        console.error('Deezer search error:', err);
+        // ... error handling ...
     }
 }
 // Fetch a fresh preview URL for a Deezer track by its ID
