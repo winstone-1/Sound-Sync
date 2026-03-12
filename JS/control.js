@@ -34,7 +34,7 @@ function saveControls() {
         btn.classList.add('bg-green-600');
         setTimeout(() => {
             btn.textContent = 'Apply Settings';
-            btn.classList.remove('bg-green-600');c
+            btn.classList.remove('bg-green-600');
         }, 1500);
     }
 }

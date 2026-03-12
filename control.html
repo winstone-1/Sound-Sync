@@ -136,14 +136,15 @@
               class="flex-1 h-2 accent-blue-500 cursor-pointer rounded-full">
             <span class="text-slate-500 text-xs mono">2.0x</span>
           </div>
+          
           <!-- Speed presets -->
           <div class="flex gap-2 mt-4">
-            ${['0.5','0.75','1.0','1.25','1.5','2.0'].map(v => `
-            <button onclick="document.getElementById('ctrl-speed').value=${v}; updateLabels();"
-              class="flex-1 py-1.5 text-xs mono rounded-lg bg-slate-800 hover:bg-blue-600/30
-                     hover:text-blue-300 text-slate-400 transition-colors border border-slate-700">
-              ${v}x
-            </button>`).join('')}
+            <button data-speed="0.5"  onclick="setSpeed(0.5)"  class="preset-btn flex-1 py-1.5 text-xs rounded-lg bg-slate-800 text-slate-400 border border-slate-700 hover:bg-blue-600/30 hover:text-blue-300 transition-colors">0.5x</button>
+            <button data-speed="0.75" onclick="setSpeed(0.75)" class="preset-btn flex-1 py-1.5 text-xs rounded-lg bg-slate-800 text-slate-400 border border-slate-700 hover:bg-blue-600/30 hover:text-blue-300 transition-colors">0.75x</button>
+            <button data-speed="1.0"  onclick="setSpeed(1.0)"  class="preset-btn flex-1 py-1.5 text-xs rounded-lg bg-slate-800 text-slate-400 border border-slate-700 hover:bg-blue-600/30 hover:text-blue-300 transition-colors">1.0x</button>
+            <button data-speed="1.25" onclick="setSpeed(1.25)" class="preset-btn flex-1 py-1.5 text-xs rounded-lg bg-slate-800 text-slate-400 border border-slate-700 hover:bg-blue-600/30 hover:text-blue-300 transition-colors">1.25x</button>
+            <button data-speed="1.5"  onclick="setSpeed(1.5)"  class="preset-btn flex-1 py-1.5 text-xs rounded-lg bg-slate-800 text-slate-400 border border-slate-700 hover:bg-blue-600/30 hover:text-blue-300 transition-colors">1.5x</button>
+            <button data-speed="2.0"  onclick="setSpeed(2.0)"  class="preset-btn flex-1 py-1.5 text-xs rounded-lg bg-slate-800 text-slate-400 border border-slate-700 hover:bg-blue-600/30 hover:text-blue-300 transition-colors">2.0x</button>
           </div>
         </div>
 
@@ -154,9 +155,13 @@
               <h3 class="text-white font-bold">Auto-Sync Visualizer</h3>
               <p class="text-slate-500 text-xs mt-0.5">Visualizer always active for all audio sources</p>
             </div>
-            <div class="w-12 h-6 bg-orange-500 rounded-full relative cursor-pointer">
-              <span class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></span>
-            </div>
+            <button id="ctrl-autosync-btn" onclick="toggleAutoSync()"
+              class="w-12 h-6 bg-orange-500 rounded-full relative cursor-pointer transition-colors duration-300">
+              <span id="ctrl-autosync-dot"
+                class="absolute top-1 left-1 w-4 h-4 bg-white rounded-full shadow"
+                style="transform: translateX(24px);">
+              </span>
+            </button>
           </div>
         </div>
 
@@ -248,7 +253,7 @@
     </div>
   </div>
 </footer>
-<script src="JS/control.js"></script>
 <script src="JS/sidebar.js"></script>
+<script src="JS/control.js"></script>
 </body>
 </html>
