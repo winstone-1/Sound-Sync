@@ -11,30 +11,40 @@ function handleSearch(query) {
     searchTimeout = setTimeout(() => searchDeezer(q), 400);
 }
 
-// Try multiple CORS proxies in order until one works
+// Tries multiple CORS proxies in order until one works
+// These proxies are tested to work on GitHub Pages (HTTPS) deployments
 async function fetchWithProxyCascade(apiUrl) {
     const proxies = [
-        url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
-        url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
-        url => `https://thingproxy.freeboard.io/fetch/${url}`,
+        // jsonp.afeld.me: returns raw JSON, very reliable on GH Pages
+        {
+            build: url => `https://jsonp.afeld.me/?url=${encodeURIComponent(url)}`,
+            unwrap: json => json  // returns the API response directly
+        },
+        // allorigins: wraps response in { contents: "..." }
+        {
+            build: url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+            unwrap: json => (json.contents !== undefined ? JSON.parse(json.contents) : json)
+        },
+        // corsproxy.io: returns raw JSON
+        {
+            build: url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+            unwrap: json => json
+        },
     ];
 
-    for (const buildProxy of proxies) {
+    for (const proxy of proxies) {
         try {
-            const proxyUrl = buildProxy(apiUrl);
-            const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(6000) });
-            if (!res.ok) continue;
+            const res = await fetch(proxy.build(apiUrl), { signal: AbortSignal.timeout(7000) });
+            if (!res.ok) { console.warn(`Proxy returned ${res.status}, trying next...`); continue; }
 
-            const text = await res.text();
+            const json = await res.json();
+            const data = proxy.unwrap(json);
 
-            // allorigins wraps in { contents: "..." } — unwrap if needed
-            try {
-                const json = JSON.parse(text);
-                if (json.contents !== undefined) return JSON.parse(json.contents);
-                return json;
-            } catch {
-                continue;
+            // Sanity check — make sure we got real Deezer data back
+            if (data && (data.data !== undefined || data.id !== undefined || data.preview !== undefined)) {
+                return data;
             }
+            console.warn('Proxy returned unexpected shape, trying next...', data);
         } catch (e) {
             console.warn('Proxy failed, trying next...', e.message);
         }
