@@ -11,6 +11,17 @@
 </head>
 <body>
 
+   <button id="sidebar-toggle"
+  onclick="toggleSidebar()"
+  class="fixed top-4 left-4 z-20 w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:bg-slate-700 transition-colors ">
+  <i class="fas fa-bars text-sm"></i>
+</button>
+
+<div id="sidebar-overlay"
+  onclick="toggleSidebar()"
+  class="fixed inset-0 bg-black/50 z-10  hidden">
+</div>
+
   <aside class="flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-gray-900 border-r border-gray-700 fixed top-0 left-0 z-10 transition-transform duration-300">
     <a href="index.html">
         <img class="w-auto h-6 sm:h-7 ml-32" src="Assets\logo.png" alt="Logo">
@@ -189,5 +200,6 @@
   </div>
 </footer>
 <script src="JS/stage.js"></script>
+<script src="JS/sidebar.js"></script>
 </body>
 </html>

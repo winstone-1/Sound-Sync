@@ -68,14 +68,16 @@ cd Sound-Sync
 
 
 ### 3.Screenshots
+![Alt Text](Assets/screenshot.png)
+![Alt Text](Assets/screenshot1.png)
+![Alt Text](Assets/screenshot2.png)
 
 ## Support and Contact Information
 - **email:** winstonemuna404@gmail.com
 - **Phone number:** 0795278996
 
-## Live Link
-[see my website]([text](https://winstone-1.github.io//))
+
 ## Known Bugs
-There are no bugs
+No Bugs
 ## License
 ### MIT License
