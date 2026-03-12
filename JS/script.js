@@ -41,7 +41,7 @@ fileInput.addEventListener('change', function(e) {
 });
 
 //  PLAY TRACK 
-function playTrack(index) {
+async function playTrack(index) {
     if (index < 0 || index >= queue.length) return;
     const track  = queue[index];
     currentIndex = index;
@@ -55,13 +55,26 @@ function playTrack(index) {
         audio.src = track.url;
         audio.load();
         audio.play().catch(console.error);
-    } else {
+   } else {
         audio.pause(); audio.src = '';
-        deezerAudio.src = track.url;
+
+        // Always fetch a fresh URL — Deezer CDN links expire in ~2 minutes
+        const freshUrl = track.deezerId
+            ? await getFreshDeezerUrl(track.deezerId)
+            : track.url;
+
+        if (!freshUrl) {
+            console.error('Could not get fresh Deezer URL');
+            return;
+        }
+
+        // Update stored URL so next play is also fresh if called quickly
+        track.url = freshUrl;
+
+        deezerAudio.src = freshUrl;
         deezerAudio.load();
         deezerAudio.play().catch(e => console.error('Deezer play failed:', e));
     }
-
     isPlaying = true;
 
     const nameEl = document.getElementById('now-playing-name');
@@ -100,7 +113,7 @@ function addToQueue(file) {
 
 //  ADD DEEZER TRACK 
 function addDeezerTrack(id, title, artist, previewUrl, cover) {
-    queue.push({ id: nextId++, title, artist, votes: 0, url: previewUrl, cover, file: null });
+    queue.push({ id: nextId++, title, artist, votes: 0, url: previewUrl, deezerId: id, cover, file: null });
     renderQueue();
     const nameEl = document.getElementById('now-playing-name');
     if (nameEl) {

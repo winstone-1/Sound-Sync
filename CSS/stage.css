@@ -4,4 +4,15 @@
 .mono { 
     font-family: 'Space Mono', monospace; 
 }
-    
+
+
+ @keyframes bar1 { 0%,100%{height:30%} 50%{height:90%} }
+ @keyframes bar2 { 0%,100%{height:70%} 50%{height:30%} }
+ @keyframes bar3 { 0%,100%{height:50%} 50%{height:100%} }
+ @keyframes bar4 { 0%,100%{height:80%} 50%{height:40%} }
+  @keyframes bar5 { 0%,100%{height:40%} 50%{height:75%} }
+  .bar1 { animation: bar1 1.1s ease-in-out infinite; }
+  .bar2 { animation: bar2 0.9s ease-in-out infinite; }
+  .bar3 { animation: bar3 1.3s ease-in-out infinite; }
+  .bar4 { animation: bar4 0.8s ease-in-out infinite; }
+  .bar5 { animation: bar5 1.2s ease-in-out infinite; }

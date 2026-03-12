@@ -10,22 +10,117 @@
     <link rel="stylesheet" href="CSS/stage.css">
 </head>
 <body>
-    <div class="min-h-screen bg-black flex items-center justify-center p-6">
-  <div class="w-full max-w-4xl bg-white/5 backdrop-blur-xl border border-white/10 rounded-[3rem] p-12 shadow-2xl relative overflow-hidden">
-    <div class="absolute -top-24 -left-24 w-64 h-64 bg-purple-600/20 blur-[100px]"></div>
+
+  <aside class="flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-gray-900 border-r border-gray-700 fixed top-0 left-0 z-10 transition-transform duration-300">
+    <a href="index.html">
+        <img class="w-auto h-6 sm:h-7 ml-32" src="Assets\logo.png" alt="Logo">
+    </a>
     
-    <div class="relative z-10 text-center">
-      <h1 class="text-5xl font-black text-white tracking-tighter mb-2">NOW PLAYING</h1>
-      <p class="text-purple-400 font-mono tracking-widest text-sm uppercase">Stage Mode: Active</p>
-      
-      <div class="mt-12 h-64 w-full bg-slate-900/40 rounded-2xl border border-white/5 flex items-end justify-center gap-1 p-4">
-        <div class="w-4 bg-purple-500 h-1/2 animate-pulse"></div>
-        <div class="w-4 bg-blue-500 h-3/4 animate-pulse"></div>
-        <div class="w-4 bg-purple-400 h-full animate-pulse"></div>
+
+    <div class="relative mt-6">
+    </div>
+
+    <div class="flex flex-col justify-between flex-1 mt-6">
+        <nav>
+            <a class="flex items-center px-4 py-2 text-gray-700 bg-gray-100 rounded-md dark:bg-gray-800 dark:text-gray-200" href="index.html">
+                <span class="mx-4 font-medium">Pulse</span>
+            </a>
+
+            <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="Join.html">
+         <span class="mx-4 font-medium">Join</span>
+            </a>
+
+            <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="stage.html">
+                <span class="mx-4 font-medium">Stage</span>
+            </a>
+
+            <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="stats.html">
+                <span class="mx-4 font-medium">Stats</span>
+            </a>
+
+            <hr class="my-6 border-gray-200 dark:border-gray-600" />
+
+            <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="control.html">
+                <span class="mx-4 font-medium">Control</span>
+            </a>
+
+          
+        </nav>
+
+        <div class="flex items-center justify-between px-2 mt-2">
+  <div class="flex items-center gap-2">
+    <img id="profile-avatar"
+         class="object-cover rounded-full h-9 w-9 border-2 border-purple-600/40"
+         src="https://ui-avatars.com/api/?name=U&background=7c3aed&color=fff&size=36"
+         alt="avatar">
+    <div class="min-w-0">
+      <p id="profile-name"
+         class="text-sm font-semibold text-slate-200 truncate max-w-28">
+        Loading...
+      </p>
+      <p class="text-xs text-slate-500">Member</p>
+    </div>
+  </div>
+
+  <!-- Sign out button -->
+  <button onclick="signOut()"
+    title="Sign out"
+    class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-600 hover:text-red-400 hover:bg-red-400/10 transition-colors">
+    <i class="fas fa-right-from-bracket text-xs"></i>
+  </button>
+</div>
+    </div>
+</aside>
+
+  <div class="flex-1 flex items-center justify-center p-6">
+    <div class="w-full max-w-3xl bg-white/5 backdrop-blur-xl border border-white/10
+                rounded-[3rem] p-12 shadow-2xl relative overflow-hidden">
+
+      <!-- Glow blobs -->
+      <div class="absolute -top-24 -left-24 w-64 h-64 bg-purple-600/20 blur-[100px] pointer-events-none"></div>
+      <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-blue-600/15 blur-[100px] pointer-events-none"></div>
+
+      <div class="relative z-10 text-center">
+        <h1 class="text-5xl font-black text-white tracking-tighter mb-2">NOW PLAYING</h1>
+        <p id="stage-status" class="text-purple-400 mono tracking-widest text-sm uppercase mb-10">
+          Idle
+        </p>
+
+        <!-- Album art (shown only for Deezer tracks) -->
+        <img id="stage-cover" src="" alt="Album art"
+          class="hidden w-40 h-40 rounded-2xl object-cover mx-auto mb-8 shadow-2xl border border-white/10">
+
+        <!-- Track info -->
+        <div class="mb-10">
+          <p id="stage-title" class="text-4xl font-black text-white mb-2 truncate">
+            Nothing playing
+          </p>
+          <p id="stage-artist" class="text-slate-400 text-lg">
+            Open the Pulse page to start
+          </p>
+        </div>
+
+        <!-- Animated bars visualizer -->
+        <div class="h-24 w-full flex items-end justify-center gap-2 px-8">
+          <div class="w-5 bg-purple-500 rounded-t-sm bar1" style="height:30%"></div>
+          <div class="w-5 bg-blue-500 rounded-t-sm bar2" style="height:70%"></div>
+          <div class="w-5 bg-purple-400 rounded-t-sm bar3" style="height:50%"></div>
+          <div class="w-5 bg-blue-400 rounded-t-sm bar4" style="height:80%"></div>
+          <div class="w-5 bg-purple-500 rounded-t-sm bar5" style="height:40%"></div>
+          <div class="w-5 bg-blue-500 rounded-t-sm bar1" style="height:60%"></div>
+          <div class="w-5 bg-purple-400 rounded-t-sm bar2" style="height:35%"></div>
+          <div class="w-5 bg-blue-400 rounded-t-sm bar3" style="height:90%"></div>
+          <div class="w-5 bg-purple-500 rounded-t-sm bar4" style="height:55%"></div>
+          <div class="w-5 bg-blue-500 rounded-t-sm bar5" style="height:45%"></div>
+        </div>
+
+        <!-- Last updated hint -->
+        <p class="text-slate-600 text-xs mono mt-8">
+          Auto-refreshes every 3 seconds
+        </p>
       </div>
     </div>
   </div>
-</div>
 
 
 
@@ -93,5 +188,6 @@
     </div>
   </div>
 </footer>
+<script src="JS/stage.js"></script>
 </body>
 </html>

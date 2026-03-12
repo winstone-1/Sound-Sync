@@ -48,6 +48,18 @@ async function searchDeezer(query) {
         console.error('Deezer search error:', err);
     }
 }
+// Fetch a fresh preview URL for a Deezer track by its ID
+async function getFreshDeezerUrl(deezerId) {
+    try {
+        const url  = `https://corsproxy.io/?https://api.deezer.com/track/${deezerId}`;
+        const res  = await fetch(url);
+        const data = await res.json();
+        return data.preview || null;
+    } catch (e) {
+        console.error('Failed to refresh Deezer URL:', e);
+        return null;
+    }
+}
 
 function renderSearchResults(tracks, query) {
     const container = document.getElementById('queue-list');
@@ -73,7 +85,7 @@ function renderSearchResults(tracks, query) {
         </div>
 
         <div class="flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0">
-          <button onclick="previewDeezerTrack('${track.preview}', '${escapeStr(track.title)}')"
+          <button onclick="previewDeezerTrack('${track.preview}', ${track.id}, '${escapeStr(track.title)}')"
             class="w-7 h-7 rounded-lg bg-slate-700 hover:bg-slate-600 flex items-center justify-center
                    text-slate-400 hover:text-white transition-colors" title="Preview 30s">
             <i class="fas fa-play text-xs"></i>
@@ -89,15 +101,17 @@ function renderSearchResults(tracks, query) {
 }
 
 // Preview 30s — plays through visualizer, does NOT add to queue
-function previewDeezerTrack(previewUrl, title) {
+async function previewDeezerTrack(previewUrl, deezerId, title) {
     audio.pause();
     audio.src = '';
-
-    // Init full audio graph so visualizer works
     initVisualizer();
     if (audioCtx.state === 'suspended') audioCtx.resume();
 
-    deezerAudio.src = previewUrl;
+    // Refresh the URL before playing
+    const freshUrl = deezerId ? await getFreshDeezerUrl(deezerId) : previewUrl;
+    if (!freshUrl) { console.error('Preview URL expired and could not refresh'); return; }
+
+    deezerAudio.src = freshUrl;
     deezerAudio.load();
     deezerAudio.play().catch(e => console.error('Preview failed:', e));
     isPlaying = true;
