@@ -1,4 +1,3 @@
-
   // ── Tab switcher 
   function switchTab(tab) {
     const isSignup = tab === 'signup';

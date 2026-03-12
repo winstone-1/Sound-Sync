@@ -32,7 +32,7 @@ function loadProfile() {
 
 // SIGN OUT — clear profile and go to login
 function signOut() {
-  if (!confirm('Sign out of SoundSync?')) return;
+  if (!confirm('')) return;
   localStorage.removeItem('soundsync_user');
   window.location.href = 'Join.html';
 }
