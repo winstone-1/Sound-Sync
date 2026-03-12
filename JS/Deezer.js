@@ -8,34 +8,38 @@ function handleSearch(query) {
     clearTimeout(searchTimeout);
     const q = query.trim();
     if (!q) { renderQueue(); return; }
-    searchTimeout = setTimeout(() => searchDeezer(q), 400);
+    searchTimeout = setTimeout(() => searchDeezer(q), 300);
 }
 
 // Tries multiple CORS proxies in order until one works
-// These proxies are tested to work on GitHub Pages (HTTPS) deployments
 async function fetchWithProxyCascade(apiUrl) {
     const proxies = [
-        // jsonp.afeld.me: returns raw JSON, very reliable on GH Pages
+        // /raw returns the API JSON directly — no unwrapping needed, most reliable on GH Pages
         {
-            build: url => `https://jsonp.afeld.me/?url=${encodeURIComponent(url)}`,
-            unwrap: json => json  // returns the API response directly
+            build: url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+            unwrap: json => json
         },
-        // allorigins: wraps response in { contents: "..." }
+        // /get wraps in { contents: "..." } — fallback if /raw is rate-limited
         {
             build: url => `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
             unwrap: json => (json.contents !== undefined ? JSON.parse(json.contents) : json)
         },
-        // corsproxy.io: returns raw JSON
+        // corsproxy.io — last resort
         {
             build: url => `https://corsproxy.io/?${encodeURIComponent(url)}`,
             unwrap: json => json
         },
     ];
 
+    let lastError = null;
     for (const proxy of proxies) {
         try {
-            const res = await fetch(proxy.build(apiUrl), { signal: AbortSignal.timeout(7000) });
-            if (!res.ok) { console.warn(`Proxy returned ${res.status}, trying next...`); continue; }
+            const res = await fetch(proxy.build(apiUrl), { signal: AbortSignal.timeout(8000) });
+            if (!res.ok) {
+                console.warn(`Proxy returned ${res.status}, trying next...`);
+                lastError = new Error(`HTTP ${res.status}`);
+                continue;
+            }
 
             const json = await res.json();
             const data = proxy.unwrap(json);
@@ -45,11 +49,13 @@ async function fetchWithProxyCascade(apiUrl) {
                 return data;
             }
             console.warn('Proxy returned unexpected shape, trying next...', data);
+            lastError = new Error('Unexpected response shape');
         } catch (e) {
             console.warn('Proxy failed, trying next...', e.message);
+            lastError = e;
         }
     }
-    throw new Error('All proxies failed — check your connection or try again shortly.');
+    throw lastError || new Error('All proxies failed — try again in a moment.');
 }
 
 async function searchDeezer(query) {
@@ -107,10 +113,6 @@ async function getFreshDeezerUrl(deezerId) {
 function renderSearchResults(tracks, query) {
     const container = document.getElementById('queue-list');
     if (!container) return;
-
-    // Build track rows safely — store data in a map to avoid inline-attribute escaping bugs
-    const trackMap = {};
-    tracks.forEach(track => { trackMap[track.id] = track; });
 
     container.innerHTML = `
       <div class="flex items-center justify-between px-4 py-2 border-b border-slate-800">
