@@ -46,36 +46,32 @@ async function playTrack(index) {
     const track  = queue[index];
     currentIndex = index;
 
-    // Both players share one audio graph — always init
     initVisualizer();
     if (audioCtx.state === 'suspended') audioCtx.resume();
 
     if (track.url.startsWith('blob:')) {
+        // Local file — play through Web Audio
         deezerAudio.pause(); deezerAudio.src = '';
         audio.src = track.url;
         audio.load();
         audio.play().catch(console.error);
-   } else {
+        isPlaying = true;
+
+    } else if (track.url.startsWith('spotify:')) {
+        // Spotify track — hand off to SDK player
         audio.pause(); audio.src = '';
+        deezerAudio.pause(); deezerAudio.src = '';
+        await playSpotifyTrack(track.url);
+        // isPlaying is set by the player_state_changed listener in spotify.js
 
-        // Always fetch a fresh URL — Deezer CDN links expire in ~2 minutes
-        const freshUrl = track.deezerId
-            ? await getFreshDeezerUrl(track.deezerId)
-            : track.url;
-
-        if (!freshUrl) {
-            console.error('Could not get fresh Deezer URL');
-            return;
-        }
-
-        // Update stored URL so next play is also fresh if called quickly
-        track.url = freshUrl;
-
-        deezerAudio.src = freshUrl;
+    } else {
+        // Generic remote URL (fallback)
+        audio.pause(); audio.src = '';
+        deezerAudio.src = track.url;
         deezerAudio.load();
-        deezerAudio.play().catch(e => console.error('Deezer play failed:', e));
+        deezerAudio.play().catch(e => console.error('Play failed:', e));
+        isPlaying = true;
     }
-    isPlaying = true;
 
     const nameEl = document.getElementById('now-playing-name');
     if (nameEl) nameEl.textContent = track.title;
@@ -83,11 +79,11 @@ async function playTrack(index) {
     const btn = document.getElementById('btn-playpause');
     if (btn) btn.innerHTML = '<i class="fas fa-pause"></i>';
 
-    // Stats — session play count
+    // Stats
     const plays = parseInt(sessionStorage.getItem('soundsync_plays') || '0');
     sessionStorage.setItem('soundsync_plays', plays + 1);
 
-    // Stage — broadcast now playing
+    // Stage broadcast
     localStorage.setItem('soundsync_nowplaying', JSON.stringify({
         title: track.title, artist: track.artist, cover: track.cover || null
     }));
@@ -111,9 +107,9 @@ function addToQueue(file) {
     return track;
 }
 
-//  ADD DEEZER TRACK 
-function addDeezerTrack(id, title, artist, previewUrl, cover) {
-    queue.push({ id: nextId++, title, artist, votes: 0, url: previewUrl, deezerId: id, cover, file: null });
+//  ADD TRACK (called from spotify.js search results)
+function addDeezerTrack(id, title, artist, url, cover) {
+    queue.push({ id: nextId++, title, artist, votes: 0, url, cover, file: null });
     renderQueue();
     const nameEl = document.getElementById('now-playing-name');
     if (nameEl) {
@@ -150,6 +146,7 @@ function renderQueue() {
 
     container.innerHTML = queue.map((track, index) => {
         const isActive = index === currentIndex;
+        const isSpotify = track.url?.startsWith('spotify:');
         return `
         <div class="flex items-center gap-3 px-4 py-3 transition-colors cursor-pointer
              ${isActive ? 'bg-purple-600/20 border-l-2 border-purple-500' : 'hover:bg-slate-800/60'}"
@@ -160,7 +157,7 @@ function renderQueue() {
                  <i class="fas fa-music text-slate-600 text-xs"></i></div>`}
           <div class="flex-1 min-w-0">
             <p class="text-sm font-semibold truncate ${isActive ? 'text-white' : 'text-slate-300'}">${track.title}</p>
-            <p class="text-xs text-slate-500 truncate">${track.artist}</p>
+            <p class="text-xs text-slate-500 truncate">${track.artist}${isSpotify ? ' <span class="text-green-500">●</span>' : ''}</p>
           </div>
           ${isActive
             ? '<i class="fas fa-volume-up text-purple-400 text-xs animate-pulse flex-shrink-0"></i>'
@@ -194,23 +191,34 @@ function initVisualizer() {
 }
 
 function setVolume(val) {
-    if (!gainNode || !audioCtx) return;
-    gainNode.gain.setTargetAtTime(parseFloat(val), audioCtx.currentTime, 0.01);
+    if (spotifyPlayer) spotifyPlayer.setVolume(parseFloat(val));
+    if (gainNode && audioCtx) gainNode.gain.setTargetAtTime(parseFloat(val), audioCtx.currentTime, 0.01);
 }
 
 function togglePlayPause() {
-    const track    = queue[currentIndex];
-    const isDeezer = track && !track.url.startsWith('blob:');
-    const player   = isDeezer ? deezerAudio : audio;
-    if (!player.src) return;
-    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-    if (isPlaying) {
-        player.pause(); isPlaying = false;
-        if (animationId) cancelAnimationFrame(animationId);
+    const track = queue[currentIndex];
+    if (!track) return;
+
+    if (track.url?.startsWith('spotify:')) {
+        // Spotify handles its own play/pause
+        if (spotifyPlayer) {
+            spotifyPlayer.togglePlay();
+            isPlaying = !isPlaying;
+        }
     } else {
-        player.play().catch(console.error); isPlaying = true;
-        renderFrame();
+        const isBlob   = track.url?.startsWith('blob:');
+        const player   = isBlob ? audio : deezerAudio;
+        if (!player.src) return;
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        if (isPlaying) {
+            player.pause(); isPlaying = false;
+            if (animationId) cancelAnimationFrame(animationId);
+        } else {
+            player.play().catch(console.error); isPlaying = true;
+            renderFrame();
+        }
     }
+
     const btn = document.getElementById('btn-playpause');
     if (btn) btn.innerHTML = isPlaying ? '<i class="fas fa-pause"></i>' : '<i class="fas fa-play"></i>';
 }
@@ -231,7 +239,6 @@ function renderFrame() {
         x += barWidth;
     }
 }
-
 
 //  PROFILE 
 function loadProfile() {

@@ -5,249 +5,234 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SoundSync</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
-   <link rel="stylesheet" href="CSS/index.css">
+    <link rel="stylesheet" href="CSS/index.css">
 </head>
 <body class="bg-slate-950 flex min-h-screen flex-col">
 
   <button id="sidebar-toggle"
-  onclick="toggleSidebar()"
-  class="fixed top-4 left-4 z-20 w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:bg-slate-700 transition-colors ">
-  <i class="fas fa-bars text-sm"></i>
-</button>
+    onclick="toggleSidebar()"
+    class="fixed top-4 left-4 z-20 w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:bg-slate-700 transition-colors">
+    <i class="fas fa-bars text-sm"></i>
+  </button>
 
-<div id="sidebar-overlay"
-  onclick="toggleSidebar()"
-  class="fixed inset-0 bg-black/50 z-10  hidden">
-</div>
+  <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-10 hidden"></div>
 
-<aside class="flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-gray-900 border-r border-gray-700 fixed top-0 left-0 z-10 transition-transform duration-300">
+  <aside class="flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-gray-900 border-r border-gray-700 fixed top-0 left-0 z-10 transition-transform duration-300">
     <a href="index.html">
-        <img class="w-auto h-6 sm:h-7 ml-32" src="Assets\logo.png" alt="Logo">
+      <img class="w-auto h-6 sm:h-7 ml-32" src="Assets/logo.png" alt="Logo">
     </a>
-    
-
-    <div class="relative mt-6">
-    </div>
 
     <div class="flex flex-col justify-between flex-1 mt-6">
-        <nav>
-            <a class="flex items-center px-4 py-2 text-gray-700 bg-gray-100 rounded-md dark:bg-gray-800 dark:text-gray-200" href="index.html">
-                <span class="mx-4 font-medium">Pulse</span>
-            </a>
+      <nav>
+        <a class="flex items-center px-4 py-2 text-gray-700 bg-gray-100 rounded-md dark:bg-gray-800 dark:text-gray-200" href="index.html">
+          <span class="mx-4 font-medium">Pulse</span>
+        </a>
+        <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="Join.html">
+          <span class="mx-4 font-medium">Join</span>
+        </a>
+        <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="stage.html">
+          <span class="mx-4 font-medium">Stage</span>
+        </a>
+        <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="stats.html">
+          <span class="mx-4 font-medium">Stats</span>
+        </a>
+        <hr class="my-6 border-gray-200 dark:border-gray-600" />
+        <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="control.html">
+          <span class="mx-4 font-medium">Control</span>
+        </a>
+      </nav>
 
-            <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="Join.html">
-         <span class="mx-4 font-medium">Join</span>
-            </a>
-
-            <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="stage.html">
-                <span class="mx-4 font-medium">Stage</span>
-            </a>
-
-            <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="stats.html">
-                <span class="mx-4 font-medium">Stats</span>
-            </a>
-
-            <hr class="my-6 border-gray-200 dark:border-gray-600" />
-
-            <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="control.html">
-                <span class="mx-4 font-medium">Control</span>
-            </a>
-
-          
-        </nav>
-
-        <div class="flex items-center justify-between px-2 mt-2">
-  <div class="flex items-center gap-2">
-    <img id="profile-avatar"
-         class="object-cover rounded-full h-9 w-9 border-2 border-purple-600/40"
-         src="https://ui-avatars.com/api/?name=U&background=7c3aed&color=fff&size=36"
-         alt="avatar">
-    <div class="min-w-0">
-      <p id="profile-name"
-         class="text-sm font-semibold text-slate-200 truncate max-w-28">
-        Loading...
-      </p>
-      <p class="text-xs text-slate-500">Member</p>
-    </div>
-  </div>
-
-  <!-- Sign out button -->
-  <button onclick="signOut()"
-    title="Sign out"
-    class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-600 hover:text-red-400 hover:bg-red-400/10 transition-colors">
-    <i class="fas fa-right-from-bracket text-xs"></i>
-  </button>
-</div>
-    </div>
-</aside>
-
-
-
-   <div class="flex-1 flex flex-col min-h-screen ml-64"> 
-    <main class="flex-1 flex flex-col justify-start pt-8 px-8 bg-black relative">
-      <div class="w-full mb-6">
-    <div class="relative">
-      <span class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-        <i class="fas fa-search text-slate-500 text-sm"></i>
-      </span>
-      <input
-        id="main-search"
-        type="text"
-        placeholder="Search tracks, artists..."
-        oninput="handleSearch(this.value)"
-        class="w-full bg-slate-900 border border-slate-700 text-slate-300 text-sm placeholder-slate-500 rounded-2xl pl-11 pr-4 py-3 focus:outline-none focus:border-purple-600 transition-colors">
-    </div>
-  </div>
-
-        <input type="file" accept="audio/*" id="audio" class="mb-4 text-white hidden">
-        
-        <audio id="audio-player" class="mb-8"></audio>
-
-        <audio id="deezer-player" crossorigin="anonymous"></audio>
-
-        <!-- TWO COLUMN ROW -->
-        <div class="w-full flex gap-6 items-start">
-
-          <!-- LEFT — visualizer -->
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between mb-3">
-              <label for="audio"
-                class="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl cursor-pointer border border-slate-700 transition-colors">
-                <i class="fas fa-folder-open"></i>
-                Open File
-              </label>
-              <p id="now-playing-name" class="text-slate-500 text-xs font-mono truncate max-w-xs">
-                No track loaded
-              </p>
-            </div>
-            <div class="bg-slate-900/60 rounded-3xl border border-white/5 p-4 shadow-2xl">
-              <canvas id="canvas"></canvas>
-              <div class="flex items-center gap-4 mt-4 px-2">
-                <button id="btn-playpause" onclick="togglePlayPause()"
-                  class="w-11 h-11 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white shadow-lg hover:scale-105 transition-transform active:scale-95">
-                  <i class="fas fa-play text-sm"></i>
-                </button>
-                <div class="flex items-center gap-2 flex-1">
-                  <i class="fas fa-volume-low text-slate-500 text-xs"></i>
-                  <input type="range" min="0" max="1" step="0.01" value="0.8"
-                    oninput="setVolume(this.value)"
-                    class="flex-1 h-1 accent-purple-500 cursor-pointer">
-                  <i class="fas fa-volume-high text-slate-500 text-xs"></i>
-                </div>
-              </div>
-            </div>
+      <div class="flex items-center justify-between px-2 mt-2">
+        <div class="flex items-center gap-2">
+          <img id="profile-avatar"
+            class="object-cover rounded-full h-9 w-9 border-2 border-purple-600/40"
+            src="https://ui-avatars.com/api/?name=U&background=7c3aed&color=fff&size=36"
+            alt="avatar">
+          <div class="min-w-0">
+            <p id="profile-name" class="text-sm font-semibold text-slate-200 truncate max-w-28">Loading...</p>
+            <p class="text-xs text-slate-500">Member</p>
           </div>
-          <!-- /LEFT -->
-
-          <!-- RIGHT — queue -->
-          <div class="w-80 flex-shrink-0 sticky top-8">
-            <div class="bg-slate-900/60 rounded-3xl border border-white/5 shadow-2xl overflow-hidden">
-              <div class="flex items-center justify-between px-5 py-4 border-b border-slate-800">
-                <div class="flex items-center gap-2">
-                  <i class="fas fa-list-ul text-purple-400 text-sm"></i>
-                  <h2 class="text-white font-bold text-sm">Up Next</h2>
-                  <span id="queue-count"
-                    class="bg-slate-800 text-slate-400 text-xs font-mono px-2 py-0.5 rounded-full">
-                    0 tracks
-                  </span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <button onclick="playPrev()"
-                    class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
-                    <i class="fas fa-backward-step text-xs"></i>
-                  </button>
-                  <button onclick="playNext()"
-                    class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
-                    <i class="fas fa-forward-step text-xs"></i>
-                  </button>
-                </div>
-              </div>
-              <div id="queue-list" class="divide-y divide-slate-800/50 overflow-y-auto" style="max-height: calc(100vh - 300px);">
-                <div class="text-center py-8">
-                  <p class="text-slate-600 text-sm font-mono">Queue is empty</p>
-                  <p class="text-slate-700 text-xs mt-1">Open a file to add tracks</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- /RIGHT -->
-
         </div>
-        <!-- /TWO COLUMN ROW -->
+        <button onclick="signOut()" title="Sign out"
+          class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-600 hover:text-red-400 hover:bg-red-400/10 transition-colors">
+          <i class="fas fa-right-from-bracket text-xs"></i>
+        </button>
+      </div>
+    </div>
+  </aside>
 
-  </main>
-        
+  <div class="flex-1 flex flex-col min-h-screen ml-64">
+    <main class="flex-1 flex flex-col justify-start pt-8 px-8 bg-black relative">
+
+      <!-- Search bar -->
+      <div class="w-full mb-3">
+        <div class="relative">
+          <span class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+            <i class="fas fa-search text-slate-500 text-sm"></i>
+          </span>
+          <input
+            id="main-search"
+            type="text"
+            placeholder="Search tracks, artists..."
+            oninput="handleSearch(this.value)"
+            class="w-full bg-slate-900 border border-slate-700 text-slate-300 text-sm placeholder-slate-500 rounded-2xl pl-11 pr-4 py-3 focus:outline-none focus:border-purple-600 transition-colors">
+        </div>
+      </div>
+
+      <!-- Spotify connect bar -->
+      <div class="flex items-center gap-3 mb-5">
+        <button id="spotify-login-btn" onclick="spotifyLogin()"
+          class="flex items-center gap-2 px-4 py-1.5 bg-green-500 hover:bg-green-400 text-black text-xs font-bold rounded-full transition-colors">
+          <i class="fab fa-spotify"></i> Connect Spotify
+        </button>
+        <button id="spotify-logout-btn" onclick="spotifyLogout()"
+          class="hidden flex items-center gap-2 px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs rounded-full transition-colors">
+          <i class="fab fa-spotify text-green-400"></i> Disconnect
+        </button>
+        <span id="spotify-badge" class="hidden text-xs text-green-400 font-mono">● Spotify connected</span>
+      </div>
+
+      <input type="file" accept="audio/*" id="audio" class="mb-4 text-white hidden">
+      <audio id="audio-player" class="mb-8"></audio>
+      <audio id="deezer-player" crossorigin="anonymous"></audio>
+
+      <!-- TWO COLUMN ROW -->
+      <div class="w-full flex gap-6 items-start">
+
+        <!-- LEFT — visualizer -->
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center justify-between mb-3">
+            <label for="audio"
+              class="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl cursor-pointer border border-slate-700 transition-colors">
+              <i class="fas fa-folder-open"></i>
+              Open File
+            </label>
+            <p id="now-playing-name" class="text-slate-500 text-xs font-mono truncate max-w-xs">
+              No track loaded
+            </p>
+          </div>
+          <div class="bg-slate-900/60 rounded-3xl border border-white/5 p-4 shadow-2xl">
+            <canvas id="canvas"></canvas>
+            <div class="flex items-center gap-4 mt-4 px-2">
+              <button id="btn-playpause" onclick="togglePlayPause()"
+                class="w-11 h-11 rounded-full bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center text-white shadow-lg hover:scale-105 transition-transform active:scale-95">
+                <i class="fas fa-play text-sm"></i>
+              </button>
+              <div class="flex items-center gap-2 flex-1">
+                <i class="fas fa-volume-low text-slate-500 text-xs"></i>
+                <input type="range" min="0" max="1" step="0.01" value="0.8"
+                  oninput="setVolume(this.value)"
+                  class="flex-1 h-1 accent-purple-500 cursor-pointer">
+                <i class="fas fa-volume-high text-slate-500 text-xs"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /LEFT -->
+
+        <!-- RIGHT — queue -->
+        <div class="w-80 flex-shrink-0 sticky top-8">
+          <div class="bg-slate-900/60 rounded-3xl border border-white/5 shadow-2xl overflow-hidden">
+            <div class="flex items-center justify-between px-5 py-4 border-b border-slate-800">
+              <div class="flex items-center gap-2">
+                <i class="fas fa-list-ul text-purple-400 text-sm"></i>
+                <h2 class="text-white font-bold text-sm">Up Next</h2>
+                <span id="queue-count" class="bg-slate-800 text-slate-400 text-xs font-mono px-2 py-0.5 rounded-full">
+                  0 tracks
+                </span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button onclick="playPrev()"
+                  class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+                  <i class="fas fa-backward-step text-xs"></i>
+                </button>
+                <button onclick="playNext()"
+                  class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+                  <i class="fas fa-forward-step text-xs"></i>
+                </button>
+              </div>
+            </div>
+            <div id="queue-list" class="divide-y divide-slate-800/50 overflow-y-auto" style="max-height: calc(100vh - 300px);">
+              <div class="text-center py-8">
+                <p class="text-slate-600 text-sm font-mono">Queue is empty</p>
+                <p class="text-slate-700 text-xs mt-1">Connect Spotify and search to add tracks</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /RIGHT -->
+
+      </div>
+      <!-- /TWO COLUMN ROW -->
+
+    </main>
 
     <footer class="bg-slate-950 border-t border-slate-900 pt-16 pb-8 px-6">
-  <div class="max-w-7xl mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-      
-      <div class="col-span-1 md:col-span-1">
-        <div class="flex items-center gap-2 mb-4">
-          <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-blue-500 flex items-center justify-center">
-           <a href="pulse.html">
-        <img class="w-auto h-6 sm:h-7" src="Assets\logo.png" alt="Logo">
-    </a>
+      <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          <div class="col-span-1 md:col-span-1">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-purple-600 to-blue-500 flex items-center justify-center">
+                <a href="index.html">
+                  <img class="w-auto h-6 sm:h-7" src="Assets/logo.png" alt="Logo">
+                </a>
+              </div>
+              <span class="text-xl font-bold text-white tracking-tight">SoundSync</span>
+            </div>
+            <p class="text-slate-400 text-sm leading-relaxed">
+              The ultimate platform for real-time audio collaboration and high-fidelity streaming. Synchronize your sound, worldwide.
+            </p>
           </div>
-          <span class="text-xl font-bold text-white tracking-tight">SoundSync</span>
+          <div>
+            <h4 class="text-white font-semibold mb-6 uppercase tracking-widest text-xs">Platform</h4>
+            <ul class="space-y-4 text-sm text-slate-400">
+              <li><a href="index.html" class="hover:text-purple-400 transition-colors">Browse Music</a></li>
+              <li><a href="stats.html" class="hover:text-purple-400 transition-colors">Live Room</a></li>
+              <li><a href="stage.html" class="hover:text-purple-400 transition-colors">Artist Dashboard</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-6 uppercase tracking-widest text-xs">Support</h4>
+            <ul class="space-y-4 text-sm text-slate-400">
+              <li><a href="#" class="hover:text-purple-400 transition-colors">Help Center</a></li>
+              <li><a href="#" class="hover:text-purple-400 transition-colors">Community</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-6 uppercase tracking-widest text-xs">Stay Synced</h4>
+            <div class="flex gap-4">
+              <a href="#" class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-slate-400 hover:bg-purple-600 hover:text-white transition-all">
+                <i class="fab fa-discord"></i>
+              </a>
+              <a href="#" class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-slate-400 hover:bg-blue-500 hover:text-white transition-all">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-slate-400 hover:bg-pink-600 hover:text-white transition-all">
+                <i class="fab fa-instagram"></i>
+              </a>
+            </div>
+          </div>
         </div>
-        <p class="text-slate-400 text-sm leading-relaxed">
-          The ultimate platform for real-time audio collaboration and high-fidelity streaming. Synchronize your sound, worldwide.
-        </p>
-      </div>
-
-      <div>
-        <h4 class="text-white font-semibold mb-6 uppercase tracking-widest text-xs">Platform</h4>
-        <ul class="space-y-4 text-sm text-slate-400">
-          <li><a href="index.html" class="hover:text-purple-400 transition-colors">Browse Music</a></li>
-          <li><a href="stats.html" class="hover:text-purple-400 transition-colors">Live Room</a></li>
-          <li><a href="stage.html" class="hover:text-purple-400 transition-colors">Artist Dashboard</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="text-white font-semibold mb-6 uppercase tracking-widest text-xs">Support</h4>
-        <ul class="space-y-4 text-sm text-slate-400">
-          <li><a href="#" class="hover:text-purple-400 transition-colors">Help Center</a></li>
-          <li><a href="#" class="hover:text-purple-400 transition-colors"></a></li>
-          <li><a href="#" class="hover:text-purple-400 transition-colors">Community</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="text-white font-semibold mb-6 uppercase tracking-widest text-xs">Stay Synced</h4>
-        <div class="flex gap-4">
-          <a href="#" class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-slate-400 hover:bg-purple-600 hover:text-white transition-all">
-             <i class="fab fa-discord"></i>
-          </a>
-          <a href="#" class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-slate-400 hover:bg-blue-500 hover:text-white transition-all">
-             <i class="fab fa-twitter"></i>
-          </a>
-          <a href="#" class="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-slate-400 hover:bg-pink-600 hover:text-white transition-all">
-             <i class="fab fa-instagram"></i>
-          </a>
+        <div class="pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p class="text-slate-500 text-xs">&copy; 2026 SoundSync Audio Labs. Built with precision.</p>
+          <div class="flex gap-6 text-xs text-slate-500">
+            <a href="#" class="hover:underline">Privacy Policy</a>
+            <a href="#" class="hover:underline">Terms of Service</a>
+            <a href="#" class="hover:underline">Cookie Settings</a>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="pt-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-center gap-4">
-      <p class="text-slate-500 text-xs">
-        &copy; 2026 SoundSync Audio Labs. Built with precision.
-      </p>
-      <div class="flex gap-6 text-xs text-slate-500">
-        <a href="#" class="hover:underline">Privacy Policy</a>
-        <a href="#" class="hover:underline">Terms of Service</a>
-        <a href="#" class="hover:underline">Cookie Settings</a>
-      </div>
-    </div>
+    </footer>
   </div>
-</footer>
-   </div>
-    <script src="JS/script.js"></script>
-    <script src="JS/Deezer.js"></script>
-    <script src="JS/profile.js"></script>
-    <script src="JS/sidebar.js"></script>
+
+  
+  <script src="https://sdk.scdn.co/spotify-player.js"></script>
+  <script src="JS/script.js"></script>
+  <script src="JS/spotify.js"></script>
+  <script src="JS/profile.js"></script>
+  <script src="JS/sidebar.js"></script>
+
 </body>
 </html>
