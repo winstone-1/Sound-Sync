@@ -22,9 +22,17 @@ async function searchDeezer(query) {
       </div>`;
 
     try {
-        const url  = `https://corsproxy.io/?https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=15`;
-        const res  = await fetch(url);
-        const data = await res.json();
+        // SWAP PROXY: Using AllOrigins is often more reliable for Localhost development
+        const targetUrl = `https://api.deezer.com/search?q=${encodeURIComponent(query)}&limit=15`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
+        
+        const res = await fetch(proxyUrl);
+        
+        if (!res.ok) throw new Error(`Proxy error: ${res.status}`);
+
+        const wrapper = await res.json();
+        // AllOrigins wraps the response in a 'contents' string that we must parse
+        const data = JSON.parse(wrapper.contents);
 
         if (!data.data || data.data.length === 0) {
             container.innerHTML = `
@@ -43,7 +51,8 @@ async function searchDeezer(query) {
         container.innerHTML = `
           <div class="text-center py-8">
             <i class="fas fa-wifi text-red-400 text-xl mb-3"></i>
-            <p class="text-red-400 text-sm">Search failed. Check your connection.</p>
+            <p class="text-red-400 text-sm">Search failed (403). Try again in a moment.</p>
+            <button onclick="searchDeezer('${query}')" class="text-xs text-slate-400 underline mt-2">Retry</button>
           </div>`;
         console.error('Deezer search error:', err);
     }
@@ -51,9 +60,10 @@ async function searchDeezer(query) {
 // Fetch a fresh preview URL for a Deezer track by its ID
 async function getFreshDeezerUrl(deezerId) {
     try {
-        const url  = `https://corsproxy.io/?https://api.deezer.com/track/${deezerId}`;
-        const res  = await fetch(url);
-        const data = await res.json();
+        const target = `https://api.deezer.com/track/${deezerId}`;
+        const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(target)}`);
+        const wrapper = await res.json();
+        const data = JSON.parse(wrapper.contents);
         return data.preview || null;
     } catch (e) {
         console.error('Failed to refresh Deezer URL:', e);
