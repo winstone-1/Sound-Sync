@@ -10,32 +10,166 @@
     <link rel="stylesheet" href="CSS/control.css">
 </head>
 <body>
+    <aside class="flex flex-col w-64 h-screen px-4 py-8 overflow-y-auto bg-gray-900 border-r border-gray-700 fixed top-0 left-0 z-10 transition-transform duration-300">
+    <a href="index.html">
+        <img class="w-auto h-6 sm:h-7 ml-32" src="Assets\logo.png" alt="Logo">
+    </a>
     
-    <div class="min-h-screen bg-slate-900 flex justify-center py-20 px-4">
-  <div class="w-full max-w-2xl space-y-6">
-    <div class="bg-slate-800 p-6 rounded-2xl shadow-inner border border-slate-700">
-      <h3 class="text-orange-500 font-bold mb-6 flex items-center gap-2">
-        <span class="w-2 h-2 bg-orange-500 rounded-full animate-ping"></span>
-        SYSTEM AUDIO CONTROLS
-      </h3>
-      
-      <div class="mb-8">
-        <div class="flex justify-between text-xs text-slate-400 mb-2">
-          <span>SENSITIVITY</span>
-          <span>85%</span>
-        </div>
-        <input type="range" class="w-full h-3 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-orange-500">
-      </div>
 
-      <div class="flex items-center justify-between p-4 bg-slate-900/50 rounded-xl">
-        <span class="text-white font-medium">Auto-Sync Visualizer</span>
-        <button class="w-12 h-6 bg-orange-500 rounded-full relative">
-          <span class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></span>
-        </button>
-      </div>
+    <div class="relative mt-6">
+    </div>
+
+    <div class="flex flex-col justify-between flex-1 mt-6">
+        <nav>
+            <a class="flex items-center px-4 py-2 text-gray-700 bg-gray-100 rounded-md dark:bg-gray-800 dark:text-gray-200" href="index.html">
+                <span class="mx-4 font-medium">Pulse</span>
+            </a>
+
+            <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="Join.html">
+         <span class="mx-4 font-medium">Join</span>
+            </a>
+
+            <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="stage.html">
+                <span class="mx-4 font-medium">Stage</span>
+            </a>
+
+            <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="stats.html">
+                <span class="mx-4 font-medium">Stats</span>
+            </a>
+
+            <hr class="my-6 border-gray-200 dark:border-gray-600" />
+
+            <a class="flex items-center px-4 py-2 mt-5 text-gray-600 transition-colors duration-300 transform rounded-md dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700" href="control.html">
+                <span class="mx-4 font-medium">Control</span>
+            </a>
+
+          
+        </nav>
+
+        <div class="flex items-center justify-between px-2 mt-2">
+  <div class="flex items-center gap-2">
+    <img id="profile-avatar"
+         class="object-cover rounded-full h-9 w-9 border-2 border-purple-600/40"
+         src="https://ui-avatars.com/api/?name=U&background=7c3aed&color=fff&size=36"
+         alt="avatar">
+    <div class="min-w-0">
+      <p id="profile-name"
+         class="text-sm font-semibold text-slate-200 truncate max-w-28">
+        Loading...
+      </p>
+      <p class="text-xs text-slate-500">Member</p>
     </div>
   </div>
+
+  <!-- Sign out button -->
+  <button onclick="signOut()"
+    title="Sign out"
+    class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-600 hover:text-red-400 hover:bg-red-400/10 transition-colors">
+    <i class="fas fa-right-from-bracket text-xs"></i>
+  </button>
 </div>
+    </div>
+</aside>
+
+
+     <div class="ml-64 flex flex-col min-h-screen">
+    <main class="flex-1 px-8 pt-8 pb-12 bg-slate-950">
+
+      <div class="flex items-center gap-3 mb-2">
+        <span class="w-2.5 h-2.5 bg-orange-500 rounded-full animate-ping"></span>
+        <h2 class="text-3xl font-bold text-white">System Audio Controls</h2>
+      </div>
+      <p class="text-slate-500 text-sm mb-10 ml-6">
+        Settings are saved to localStorage and applied on the next track play
+      </p>
+
+      <div class="max-w-2xl space-y-6">
+
+        <!-- Volume -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-white font-bold">Master Volume</h3>
+              <p class="text-slate-500 text-xs mt-0.5">Controls gain node output level</p>
+            </div>
+            <span id="ctrl-vol-label"
+              class="mono text-orange-400 font-bold text-lg bg-slate-800 px-3 py-1 rounded-lg">
+              80%
+            </span>
+          </div>
+          <div class="flex items-center gap-3">
+            <i class="fas fa-volume-low text-slate-500"></i>
+            <input id="ctrl-volume" type="range" min="0" max="1" step="0.01" value="0.8"
+              oninput="updateLabels()"
+              class="flex-1 h-2 accent-orange-500 cursor-pointer rounded-full">
+            <i class="fas fa-volume-high text-slate-500"></i>
+          </div>
+        </div>
+
+        <!-- Playback speed -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <h3 class="text-white font-bold">Playback Speed</h3>
+              <p class="text-slate-500 text-xs mt-0.5">Applied to both local and Deezer tracks</p>
+            </div>
+            <span id="ctrl-speed-label"
+              class="mono text-blue-400 font-bold text-lg bg-slate-800 px-3 py-1 rounded-lg">
+              1.0x
+            </span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-slate-500 text-xs mono">0.5x</span>
+            <input id="ctrl-speed" type="range" min="0.5" max="2" step="0.05" value="1.0"
+              oninput="updateLabels()"
+              class="flex-1 h-2 accent-blue-500 cursor-pointer rounded-full">
+            <span class="text-slate-500 text-xs mono">2.0x</span>
+          </div>
+          <!-- Speed presets -->
+          <div class="flex gap-2 mt-4">
+            ${['0.5','0.75','1.0','1.25','1.5','2.0'].map(v => `
+            <button onclick="document.getElementById('ctrl-speed').value=${v}; updateLabels();"
+              class="flex-1 py-1.5 text-xs mono rounded-lg bg-slate-800 hover:bg-blue-600/30
+                     hover:text-blue-300 text-slate-400 transition-colors border border-slate-700">
+              ${v}x
+            </button>`).join('')}
+          </div>
+        </div>
+
+        <!-- Auto-sync visualizer toggle -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-white font-bold">Auto-Sync Visualizer</h3>
+              <p class="text-slate-500 text-xs mt-0.5">Visualizer always active for all audio sources</p>
+            </div>
+            <div class="w-12 h-6 bg-orange-500 rounded-full relative cursor-pointer">
+              <span class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div class="flex gap-3">
+          <button id="ctrl-save-btn" onclick="saveControls()"
+            class="flex-1 py-3.5 bg-gradient-to-r from-orange-500 to-orange-600
+                   hover:from-orange-400 hover:to-orange-500 text-white font-bold
+                   rounded-xl shadow-lg active:scale-95 transition-all">
+            Apply Settings
+          </button>
+          <button onclick="resetControls()"
+            class="px-6 py-3.5 bg-slate-800 hover:bg-slate-700 text-slate-300
+                   font-semibold rounded-xl border border-slate-700 transition-colors active:scale-95">
+            Reset
+          </button>
+        </div>
+
+        <p class="text-slate-600 text-xs text-center mono">
+          Settings apply from the next track — go back to Pulse to hear changes
+        </p>
+
+      </div>
+    </main>
 
 
 
@@ -60,9 +194,9 @@
       <div>
         <h4 class="text-white font-semibold mb-6 uppercase tracking-widest text-xs">Platform</h4>
         <ul class="space-y-4 text-sm text-slate-400">
-          <li><a href="#" class="hover:text-purple-400 transition-colors">Browse Music</a></li>
-          <li><a href="#" class="hover:text-purple-400 transition-colors">Live Rooms</a></li>
-          <li><a href="" class="hover:text-purple-400 transition-colors">Artist Dashboard</a></li>
+          <li><a href="index.html" class="hover:text-purple-400 transition-colors">Browse Music</a></li>
+          <li><a href="stats.html" class="hover:text-purple-400 transition-colors">Live Room</a></li>
+          <li><a href="stage.html" class="hover:text-purple-400 transition-colors">Artist Dashboard</a></li>
         </ul>
       </div>
 
@@ -70,7 +204,7 @@
         <h4 class="text-white font-semibold mb-6 uppercase tracking-widest text-xs">Support</h4>
         <ul class="space-y-4 text-sm text-slate-400">
           <li><a href="#" class="hover:text-purple-400 transition-colors">Help Center</a></li>
-          <li><a href="#" class="hover:text-purple-400 transition-colors">API Docs</a></li>
+          <li><a href="#" class="hover:text-purple-400 transition-colors"></a></li>
           <li><a href="#" class="hover:text-purple-400 transition-colors">Community</a></li>
         </ul>
       </div>
